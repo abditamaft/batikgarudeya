@@ -1,0 +1,90 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    
+    /* Custom Colors untuk project Batik Garudeya */
+    --color-brand-dark: #4a1515;
+    --color-brand-green: #2e4c30;
+}
+
+/* Custom Class untuk Animasi Scroll */
+.opacity-0 { opacity: 0; }
+.translate-y-10 { transform: translateY(40px); }
+.-translate-x-10 { transform: translateX(-40px); }
+.translate-x-10 { transform: translateX(40px); }
+
+/* Class ini akan ditambahkan oleh JavaScript saat elemen masuk ke viewport */
+.animate-in {
+    opacity: 1 !important;
+    transform: translate(0, 0) !important;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Staggered delay untuk produk */
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+.delay-500 { transition-delay: 500ms; }
+
+/* ===== ANIMASI SCROLL REVEAL DIPERBAHARUI ===== */
+
+/* Base state untuk semua animasi */
+.scroll-anim {
+    will-change: transform, opacity;
+}
+
+/* Variant: fade up (default) */
+.scroll-anim.fade-up {
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+/* Variant: slide dari kiri */
+.scroll-anim.slide-left {
+    opacity: 0;
+    transform: translateX(-50px);
+}
+
+/* Variant: slide dari kanan */
+.scroll-anim.slide-right {
+    opacity: 0;
+    transform: translateX(50px);
+}
+
+/* Variant: scale (zoom masuk) */
+.scroll-anim.scale-in {
+    opacity: 0;
+    transform: scale(0.92);
+}
+
+/* State aktif: semua variant jadi ini */
+.scroll-anim.animate-in {
+    opacity: 1 !important;
+    transform: translate(0, 0) scale(1) !important;
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Stagger delays */
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+.delay-500 { transition-delay: 500ms; }
+.delay-600 { transition-delay: 600ms; }
+
+/* ===== ABOUT SECTION EXTRAS ===== */
+.about-section .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
