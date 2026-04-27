@@ -4,9 +4,9 @@
 
 <section class="fixed top-0 left-0 w-full h-screen -z-10 bg-cover bg-center" style="background-image: url('{{ $hero ? asset('storage/' . $hero->bg_image) : '/images/banner-bg.jpg' }}');">
     <div class="absolute inset-0 bg-black/40"></div> 
-    <div class="h-full flex flex-col md:flex-row items-center justify-between px-6 md:px-20 pt-20">
+    <div class="h-full flex flex-col md:flex-row items-center justify-between px-6 md:px-20 pt-30">
         <div class="md:w-1/2 text-white scroll-anim slide-left">
-            <h1 class="text-5xl md:text-7xl font-bold font-serif leading-tight italic drop-shadow-xl">
+            <h1 class="text-5xl md:text-7xl font-regular font-serif leading-tight italic drop-shadow-xl font-caveat">
                 {!! $hero ? nl2br(e($hero->title_text)) : 'Keindahan Batik<br>Warisan Budaya<br>Indonesia' !!}
             </h1>
         </div>
@@ -28,7 +28,7 @@
 
         <div class="text-center mb-16 scroll-anim fade-up">
             <span class="inline-block text-xs font-bold tracking-[0.3em] uppercase text-brand-green/60 mb-3">Mengenal Lebih Dekat</span>
-            <h2 class="text-5xl md:text-6xl font-serif font-bold text-brand-green italic leading-tight">Tentang kami</h2>
+            <h2 class="text-5xl md:text-6xl font-serif font-regular text-brand-green italic leading-tight font-caveat">Tentang kami</h2>
             <div class="flex items-center justify-center gap-3 mt-5">
                 <span class="h-px w-16 bg-brand-green/30"></span>
                 <span class="text-brand-green text-xl">✦</span>
@@ -137,7 +137,7 @@
         <div class="max-w-7xl mx-auto px-6">
 
             <div class="text-center mb-4 scroll-anim fade-up">
-                <h2 class="text-4xl md:text-5xl font-serif font-bold text-brand-green italic">Produk unggulan</h2>
+                <h2 class="text-4xl md:text-5xl font-serif font-regular text-brand-green italic font-caveat">Produk unggulan</h2>
             </div>
 
             {{-- Grid Produk: 2 baris / 5 kolom sesuai referensi --}}
@@ -176,7 +176,7 @@
 
     {{-- ===== ARTIKEL ===== --}}
     <section class="max-w-7xl mx-auto px-6 py-20">
-        <h2 class="text-4xl md:text-5xl font-serif font-bold mb-10 text-brand-green italic scroll-anim fade-up">Artikel</h2>
+        <h2 class="text-4xl md:text-5xl font-serif font-regular mb-10 text-brand-green italic scroll-anim fade-up font-caveat">Artikel</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 

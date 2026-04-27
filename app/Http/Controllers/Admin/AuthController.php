@@ -14,10 +14,16 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $data = $request->validate([
             'username' => 'required',
             'password' => 'required'
         ]);
+
+        // Map incoming 'username' to 'email' so we authenticate against `users` table
+        $credentials = [
+            'email' => $data['username'],
+            'password' => $data['password'],
+        ];
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
