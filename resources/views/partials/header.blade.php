@@ -16,15 +16,12 @@
         
         <div id="nav-indicator" class="absolute top-1 bottom-1 left-0 rounded-full bg-white transition-all duration-300 ease-out -z-10 shadow-sm" style="width: 0px; transform: translateX(0px);"></div>
 
-        @php 
-            $currentRoute = request()->path(); 
-        @endphp
-
-        <a href="/" class="nav-link relative px-5 py-1.5 rounded-full transition-colors duration-300 {{ $currentRoute == '/' ? 'active-link' : '' }}">Beranda</a>
-        <a href="/profil" class="nav-link relative px-5 py-1.5 rounded-full transition-colors duration-300 {{ $currentRoute == 'profil' ? 'active-link' : '' }}">Profil</a>
-        <a href="/produk" class="nav-link relative px-5 py-1.5 rounded-full transition-colors duration-300 {{ $currentRoute == 'produk' ? 'active-link' : '' }}">Produk</a>
-        <a href="/artikel" class="nav-link relative px-5 py-1.5 rounded-full transition-colors duration-300 {{ $currentRoute == 'artikel' ? 'active-link' : '' }}">Artikel</a>
-        <a href="/kontak" class="nav-link relative px-5 py-1.5 rounded-full transition-colors duration-300 {{ $currentRoute == 'kontak' ? 'active-link' : '' }}">Kontak</a>
+        {{-- Gunakan request()->is() dengan wildcard (*) agar tetap aktif di halaman detail --}}
+        <a href="/" class="nav-link relative px-5 py-1.5 rounded-full transition-colors duration-300 {{ request()->is('/') ? 'active-link' : '' }}">Beranda</a>
+        <a href="/profil" class="nav-link relative px-5 py-1.5 rounded-full transition-colors duration-300 {{ request()->is('profil*') ? 'active-link' : '' }}">Profil</a>
+        <a href="/produk" class="nav-link relative px-5 py-1.5 rounded-full transition-colors duration-300 {{ request()->is('produk*') ? 'active-link' : '' }}">Produk</a>
+        <a href="/artikel" class="nav-link relative px-5 py-1.5 rounded-full transition-colors duration-300 {{ request()->is('artikel*') ? 'active-link' : '' }}">Artikel</a>
+        <a href="/kontak" class="nav-link relative px-5 py-1.5 rounded-full transition-colors duration-300 {{ request()->is('kontak*') ? 'active-link' : '' }}">Kontak</a>
     </nav>
 
     <a href="https://wa.me/{{ $webSettings->whatsapp_number ?? '628123456789' }}?text={{ urlencode($webSettings->whatsapp_message ?? 'Halo Batik Garudeya') }}" 

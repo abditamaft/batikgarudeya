@@ -140,13 +140,12 @@
                 <h2 class="text-4xl md:text-5xl font-serif font-regular text-brand-green italic font-caveat">Produk unggulan</h2>
             </div>
 
-            {{-- Grid Produk: 2 baris / 5 kolom sesuai referensi --}}
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-12">
+            {{-- 1. TAMPILAN DESKTOP (Grid 5 Kolom, sembunyi di HP) --}}
+            <div class="hidden md:grid grid-cols-5 gap-3 mb-5">
                 @if(isset($products) && $products->count() > 0)
                     @foreach($products as $index => $product)
                         @php $delayClass = 'delay-' . (($index % 5) + 1) * 100; @endphp
-                        <a href="{{ $webSettings->whatsapp_number ? 'https://wa.me/'.$webSettings->whatsapp_number.'?text=Halo,%20saya%20tertarik%20dengan%20produk%20'.$product->name : '#' }}"
-                           target="_blank"
+                        <a href="{{ route('produk.show', $product->slug) }}"
                            class="overflow-hidden shadow-md scroll-anim scale-in {{ $delayClass }} block group">
                             <div class="overflow-hidden" style="aspect-ratio: 3/4;">
                                 <img src="{{ asset('storage/' . $product->image) }}"
@@ -160,7 +159,116 @@
                 @endif
             </div>
 
-            <p class="text-center text-gray-500 text-sm mb-8 scroll-anim fade-up">
+            {{-- 2. TAMPILAN MOBILE (Circular Auto Slider, sembunyi di Desktop) --}}
+            <div class="md:hidden mb-5 relative">
+                @if(isset($products) && $products->count() > 0)
+
+                    {{-- Slider Wrapper --}}
+                    <div class="product-slider overflow-hidden relative">
+                        <div class="product-track flex transition-transform duration-500 ease-in-out">
+                            {{-- Slide asli --}}
+                            @foreach($products as $product)
+                            <div class="product-slide flex-shrink-0 px-1.5">
+                                <a href="{{ route('produk.show', $product->slug) }}" class="block w-full h-full overflow-hidden shadow-md group" style="aspect-ratio: 3/4;">
+                                    <img src="{{ asset('storage/' . $product->image) }}"
+                                        alt="{{ $product->name }}"
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                </a>
+                            </div>
+                            @endforeach
+
+                            {{-- Clone slide pertama untuk mengisi slot kosong di akhir --}}
+                            @foreach($products->take(2) as $product)
+                            <div class="product-slide flex-shrink-0 px-1.5 clone">
+                                <a href="{{ route('produk.show', $product->slug) }}" class="block w-full h-full overflow-hidden shadow-md group" style="aspect-ratio: 3/4;">
+                                    <img src="{{ asset('storage/' . $product->image) }}"
+                                        alt="{{ $product->name }}"
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                </a>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    {{-- Tombol Navigasi --}}
+                    <button onclick="sliderPrev()" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-10 w-9 h-9 bg-white shadow-lg flex items-center justify-center text-brand-green hover:bg-brand-green hover:text-white transition-colors duration-200">←</button>
+                    <button onclick="sliderNext()" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-10 w-9 h-9 bg-white shadow-lg flex items-center justify-center text-brand-green hover:bg-brand-green hover:text-white transition-colors duration-200">→</button>
+
+                    {{-- Dot Indicator (hanya slide asli) --}}
+                    <div class="flex justify-center gap-2 mt-4" id="slider-dots">
+                        @foreach($products as $i => $product)
+                        <span class="dot w-2 h-2 rounded-full bg-brand-green/30 transition-all duration-300 {{ $i === 0 ? 'bg-brand-green w-5' : '' }}" data-index="{{ $i }}"></span>
+                        @endforeach
+                    </div>
+
+                @else
+                    <p class="text-center text-gray-400 py-10">Belum ada produk unggulan.</p>
+                @endif
+            </div>
+
+            {{-- Script Circular Slider (Hanya Berjalan di Mobile) --}}
+            <script>
+            (function() {
+                const track = document.querySelector('.product-track');
+                if (!track) return;
+
+                // Hanya hitung slide asli (bukan clone)
+                const allSlides = document.querySelectorAll('.product-slide');
+                const dots = document.querySelectorAll('.dot');
+                const total = dots.length; // jumlah slide asli
+                let current = 0;
+                let autoTimer;
+                
+                // Set lebar setiap slide = 50%
+                allSlides.forEach(slide => {
+                    slide.style.flex = '0 0 50%';
+                    slide.style.maxWidth = '50%';
+                });
+
+                function goTo(index, animate = true) {
+                    current = ((index % total) + total) % total;
+
+                    if (!animate) {
+                        track.style.transition = 'none';
+                    } else {
+                        track.style.transition = 'transform 500ms ease-in-out';
+                    }
+
+                    track.style.transform = `translateX(-${current * 50}%)`;
+
+                    // Update dots
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('bg-brand-green', i === current);
+                        dot.classList.toggle('w-5', i === current);
+                        dot.classList.toggle('bg-brand-green/30', i !== current);
+                    });
+                }
+
+                function startAuto() {
+                    autoTimer = setInterval(() => {
+                        const next = current + 1;
+                        goTo(next);
+                    }, 2500);
+                }
+
+                function resetAuto() {
+                    clearInterval(autoTimer);
+                    startAuto();
+                }
+
+                window.sliderNext = function() { goTo(current + 1); resetAuto(); };
+                window.sliderPrev = function() { goTo(current - 1); resetAuto(); };
+
+                dots.forEach((dot, i) => {
+                    dot.addEventListener('click', () => { goTo(i); resetAuto(); });
+                });
+
+                goTo(0, false);
+                startAuto();
+            })();
+            </script>
+
+            <p class="text-center text-brand-green text-base md:text-lg font-medium mb-8 scroll-anim fade-up">
                 Koleksi pilihan terbaik kami yang menggabungkan keindahan motif tradisional dan gaya modern.
             </p>
 

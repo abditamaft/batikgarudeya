@@ -19,13 +19,14 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        // Map incoming 'username' to 'email' so we authenticate against `users` table
+        // REVISI: Gunakan 'username' (sesuai kolom di tabel admins), bukan 'email'
         $credentials = [
-            'email' => $data['username'],
+            'username' => $data['username'],
             'password' => $data['password'],
         ];
 
-        if (Auth::attempt($credentials)) {
+        // REVISI: Tambahkan guard('admin') agar mengarah ke tabel admins
+        if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended('/admin/dashboard');
         }
@@ -35,7 +36,8 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        // REVISI: Tambahkan guard('admin') saat logout
+        Auth::guard('admin')->logout(); 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/admin/login');

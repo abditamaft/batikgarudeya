@@ -54,7 +54,7 @@ class ArtikelController extends Controller
             'views' => 0,
         ]);
 
-        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil dibuat!');
+        return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dibuat!');
     }
 
     public function edit($id)
@@ -95,7 +95,7 @@ class ArtikelController extends Controller
             'views' => $article->views,
         ]);
 
-        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil diperbarui!');
+        return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil diperbarui!');
     }
     public function destroy($id)
     {
@@ -104,6 +104,6 @@ class ArtikelController extends Controller
             Storage::disk('public')->delete($article->thumbnail);
         }
         $article->delete();
-        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil dihapus!');
+        return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dihapus!');
     }
 }

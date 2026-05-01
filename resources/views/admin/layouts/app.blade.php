@@ -25,8 +25,8 @@
             <a href="/admin/landing" class="block px-4 py-2 rounded-lg hover:bg-white/10 transition {{ request()->is('admin/landing') ? 'bg-brand-green' : '' }}">🖥️ Landing Page</a>
             <a href="/admin/profil-umkm" class="block px-4 py-2 rounded-lg hover:bg-white/10 transition {{ request()->is('admin/profil-umkm') ? 'bg-brand-green' : '' }}">🏢 Profil UMKM</a>
             <p class="text-xs text-gray-400 uppercase tracking-wider mt-6 mb-2 px-2">E-Katalog</p>
-            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/10 transition">🏷️ Kategori Produk</a>
-            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/10 transition">📦 Daftar Produk</a>
+            <a href="{{ route('admin.kategori.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/10 transition">🏷️ Kategori Produk</a>
+            <a href="{{ route('admin.produk.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/10 transition">📦 Daftar Produk</a>
             
             <p class="text-xs text-gray-400 uppercase tracking-wider mt-6 mb-2 px-2">Publikasi</p>
             <a href="/admin/artikel" class="block px-4 py-2 rounded-lg hover:bg-white/10 transition">📝 Artikel / Blog</a>

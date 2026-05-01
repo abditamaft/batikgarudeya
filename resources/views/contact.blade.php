@@ -18,7 +18,7 @@
 {{-- ================================================================= --}}
 {{-- 1. HARDCODED FIXED BATIK BANNER (Landscape Panjang di Belakang) --}}
 {{-- ================================================================= --}}
-<section class="fixed top-0 left-0 w-full h-[45vh] md:h-[50vh] -z-10 bg-cover bg-center" style="background-image: url('/images/banner-bg.jpg');">
+<section class="fixed top-0 left-0 w-full h-[45vh] md:h-[50vh] -z-10 bg-cover bg-center" style="background-image: url('/images/banner-kontak.png');">
     {{-- Overlay gelap agar menu header tetap terbaca --}}
     <div class="absolute inset-0 bg-black/50"></div> 
 </section>
