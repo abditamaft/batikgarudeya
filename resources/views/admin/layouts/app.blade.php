@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Batik Garudeya</title>
     @vite(['resources/css/app.css'])
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 </head>
+
 <body class="bg-gray-50 text-gray-800 font-sans flex h-screen overflow-hidden">
 
     <aside id="sidebar" class="bg-brand-dark text-white w-64 flex-shrink-0 hidden md:flex flex-col h-full transition-all duration-300">
@@ -24,7 +29,7 @@
             <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/10 transition">📦 Daftar Produk</a>
             
             <p class="text-xs text-gray-400 uppercase tracking-wider mt-6 mb-2 px-2">Publikasi</p>
-            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/10 transition">📝 Artikel / Blog</a>
+            <a href="/admin/artikel" class="block px-4 py-2 rounded-lg hover:bg-white/10 transition">📝 Artikel / Blog</a>
             <a href="/admin/pengaturan-web" class="block px-4 py-2 rounded-lg hover:bg-white/10 transition {{ request()->is('admin/pengaturan-web') ? 'bg-brand-green' : '' }}">⚙️ Pengaturan Web</a>
         </nav>
     </aside>
@@ -56,6 +61,37 @@
             sidebar.classList.add('hidden');
             sidebar.classList.remove('absolute', 'z-50', 'shadow-2xl');
         });
+
+        ClassicEditor.create(document.querySelector('#editor'), {
+            toolbar: [
+                'heading', '|', 'bold', 'italic', 'link',
+                'bulletedList', 'numberedList', 'blockQuote',
+                'insertTable', 'undo', 'redo'
+            ]
+        })
+        .then(editor => {
+            // Sinkronisasi isi editor ke textarea
+            editor.model.document.on('change:data', () => {
+                document.querySelector('#editor').value = editor.getData();
+            });
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+        document.getElementById('thumbnailInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview_gambarArtikel').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+
     </script>
+
 </body>
 </html>

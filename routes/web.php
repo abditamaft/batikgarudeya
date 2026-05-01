@@ -5,7 +5,9 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LandingController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\WebSettingController; // Tambahkan di atas
+use App\Http\Controllers\Admin\WebSettingController;
+use App\Http\Controllers\Admin\ArtikelController;
+use App\Http\Controllers\Admin\KategoriArtikelController; // Tambahkan jika ada kategori artikel
 use App\Models\HomeHero;
 use App\Models\HomeAbout;
 use App\Models\CompanyProfile;
@@ -56,6 +58,11 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::post('/profil-umkm', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/pengaturan-web', [WebSettingController::class, 'index'])->name('settings');
     Route::post('/pengaturan-web', [WebSettingController::class, 'update'])->name('settings.update');
-    
-    // Nanti route post untuk simpan data di sini
+
+    Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel.index');
+    Route::get('/artikel/create', [ArtikelController::class, 'create'])->name('artikel.create');
+    Route::post('/artikel', [ArtikelController::class, 'store'])->name('artikel.store');
+    Route::get('/artikel/{id}/edit', [ArtikelController::class, 'edit'])->name('artikel.edit');
+    Route::put('/artikel/{id}', [ArtikelController::class, 'update'])->name('artikel.update');
+    Route::delete('/artikel/{id}', [ArtikelController::class, 'destroy'])->name('artikel.destroy');
 });
