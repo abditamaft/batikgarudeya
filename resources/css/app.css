@@ -95,3 +95,12 @@
 .ck-editor__editable {
         min-height: 300px;
 }
+
+.bg-maroon { background-color: #4a0e0e; opacity: 0.7;}
+.bg-maroon:hover { background-color: #4a0e0e; opacity: 0.9; }
+.text-maroon { color: #4a0e0e; }
+.font-handwriting { font-family: 'Caveat', cursive; }
+
+
+
+

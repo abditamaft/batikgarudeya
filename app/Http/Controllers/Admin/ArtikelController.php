@@ -15,13 +15,13 @@ class ArtikelController extends Controller
 {
     public function index()
     {
-        $articles = artikel::with('admin', 'category')->latest()->paginate(10);
+        $articles = artikel::with('admin', 'category')->latest()->get();
         return view('admin.arrtikel.arrtikel', compact('articles'));
     }
 
     public function create()
     {
-        $categories = kategoriArtikel::all();
+        $categories = kategoriArtikel::orderBy('name')->get();
         $article = new artikel();
         return view('admin.arrtikel.formArtikel', compact('categories', 'article'));
     }
@@ -60,7 +60,7 @@ class ArtikelController extends Controller
     public function edit($id)
     {
         $article = artikel::findOrFail($id);
-        $categories = kategoriArtikel::all();
+        $categories = kategoriArtikel::orderBy('name')->get();
         return view('admin.arrtikel.formArtikel', compact('article', 'categories'));
     }
     public function update(Request $request, $id)
@@ -106,4 +106,53 @@ class ArtikelController extends Controller
         $article->delete();
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dihapus!');
     }
+
+
+
+
+
+
+
+
+    
+    public function showArtikel(Request $request)
+    {
+        $viewTerbanyak = artikel::with('category')->orderBy('views', 'desc')->take(5)->get();
+
+        $daftarKategori = kategoriArtikel::all();
+
+        $search = $request->query('search');
+        $kategori = $request->query('kategori');
+        $query = artikel::with('category')->latest();
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%");
+            });
+        }
+        if ($kategori && $kategori !== 'semua') {
+            $query->where('category_id', $kategori);
+        }
+        $artikelWithSearchFilter = $query->get();
+
+        return view('artikel', compact('viewTerbanyak', 'daftarKategori', 'artikelWithSearchFilter'));
+    }
+
+    
+    public function showDetail($slug_kategori, $slug)
+    {
+        $artikel = artikel::with('category')->where('slug', $slug)->firstOrFail();
+
+        $artikel->increment('views');
+
+        $artikelKategoriSama = artikel::with('category')->where('category_id', $artikel->category_id)
+            ->where('id', '!=', $artikel->id)
+            ->latest()
+            ->get();
+
+        return view('artikel_detail', compact('artikel', 'artikelKategoriSama'));
+    }
+
+
+
+    
 }

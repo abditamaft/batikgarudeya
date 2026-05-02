@@ -49,6 +49,10 @@ Route::get('/produk', [ProductController::class, 'index'])->name('produk.index')
 Route::get('/api/produk/search', [ProductController::class, 'search'])->name('produk.search');
 Route::get('/produk/{slug}', [ProductController::class, 'show'])->name('produk.show');
 
+//route artikel
+Route::get('/artikel', [ArtikelController::class, 'showArtikel'])->name('artikel.index');
+Route::get('/artikel/{slug_kategori}/{slug}', [ArtikelController::class, 'showDetail'])->name('artikel.showDetail');
+
 // ==========================================
 // 2. RUTE LOGIN ADMIN
 // ==========================================
@@ -76,6 +80,10 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::get('/artikel/{id}/edit', [ArtikelController::class, 'edit'])->name('artikel.edit');
     Route::put('/artikel/{id}', [ArtikelController::class, 'update'])->name('artikel.update');
     Route::delete('/artikel/{id}', [ArtikelController::class, 'destroy'])->name('artikel.destroy');
+
+    Route::post('/kategori-artikel', [KategoriArtikelController::class, 'store'])->name('kategoriArtikel.store');
+    Route::put('/kategori-artikel/{id}', [KategoriArtikelController::class, 'update'])->name('kategoriArtikel.update');
+    Route::delete('/kategori-artikel/{id}', [KategoriArtikelController::class, 'destroy'])->name('kategoriArtikel.destroy');
 
     // Rute CRUD Kategori
     Route::resource('kategori', ProductCategoryController::class)->parameters([

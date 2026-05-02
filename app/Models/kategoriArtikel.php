@@ -10,6 +10,9 @@ class kategoriArtikel extends Model
     protected $fillable = [
         'name',
         'slug',
-        'created_at',
     ];
+    public function articles()
+    {
+        return $this->hasMany(artikel::class, 'category_id');
+    }
 }
