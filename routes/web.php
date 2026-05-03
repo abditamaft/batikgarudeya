@@ -9,12 +9,14 @@ use App\Http\Controllers\Admin\WebSettingController;
 use App\Http\Controllers\Admin\ArtikelController;
 use App\Http\Controllers\Admin\KategoriArtikelController; 
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Models\HomeHero;
 use App\Models\HomeAbout;
 use App\Models\CompanyProfile;
 use App\Models\WebSetting; // Tambahkan di atas
 use App\Models\Product;
+use App\Models\artikel;
 // ==========================================
 // 1. RUTE HALAMAN UTAMA (PENGUNJUNG/GUEST)
 // ==========================================
@@ -24,9 +26,11 @@ Route::get('/', function () {
         'about' => HomeAbout::first(),
         // REVISI DI SINI: Ambil 5 produk yang is_featured-nya 1 (true)
         'products' => Product::where('is_featured', 1)->limit(5)->get(), 
+        // Mengambil 3 artikel terbaru berdasarkan tanggal pembuatan
+        'latestArticles' => artikel::with('category')->latest()->limit(3)->get(),
         
-        'latestArticles' => collect([]),
-        'popularArticles' => collect([]),
+        // Mengambil 4 artikel dengan jumlah views terbanyak
+        'popularArticles' => artikel::with('category')->orderBy('views', 'desc')->limit(4)->get(),
         'webSettings' => (object) ['whatsapp_number' => '628123456789']
     ]);
 });

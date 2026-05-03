@@ -236,7 +236,8 @@
                             li.addEventListener('click', () => {
                                 searchInput.value = product.name;
                                 searchResults.classList.add('hidden');
-                                window.open(`https://wa.me/{{ $webSettings->whatsapp_number ?? '628123456789' }}?text=Halo,%20saya%20mencari%20${product.name}`, '_blank');
+                                // Mengarahkan pengunjung langsung ke halaman detail produk tersebut
+                                window.location.href = `/produk/${product.slug}`; 
                             });
                             searchResults.appendChild(li);
                         });

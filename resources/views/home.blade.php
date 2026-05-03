@@ -4,19 +4,26 @@
 
 <section class="fixed top-0 left-0 w-full h-screen -z-10 bg-cover bg-center" style="background-image: url('{{ $hero ? asset('storage/' . $hero->bg_image) : '/images/banner-bg.jpg' }}');">
     <div class="absolute inset-0 bg-black/40"></div> 
-    <div class="h-full flex flex-col md:flex-row items-center justify-between px-6 md:px-20 pt-30">
-        <div class="md:w-1/2 text-white scroll-anim slide-left">
+    
+    {{-- REVISI: Penyesuaian Flex, Padding, dan Gap agar teks & card muat di 1 layar HP --}}
+    <div class="h-full flex flex-col md:flex-row items-center justify-center md:justify-between px-6 md:px-20 pt-20 md:pt-0 gap-8 md:gap-0">
+        
+        {{-- Teks Hero (Dibuat rata tengah di HP, rata kiri di Desktop) --}}
+        <div class="w-full md:w-1/2 text-white text-center md:text-left scroll-anim slide-left">
             <h1 class="text-5xl md:text-7xl font-regular font-serif leading-tight italic drop-shadow-xl font-caveat">
                 {!! $hero ? nl2br(e($hero->title_text)) : 'Keindahan Batik<br>Warisan Budaya<br>Indonesia' !!}
             </h1>
         </div>
-        <div class="md:w-1/3 mt-10 md:mt-0 scroll-anim slide-right flex justify-center md:justify-end">
-            <div class="relative w-full max-w-[400px] rounded-xl shadow-2xl border-4 border-white/20 overflow-hidden" style="aspect-ratio: 3/4;">
+        
+        {{-- Card Gambar (Diperkecil di HP max 220px agar tidak tertimpa konten putih) --}}
+        <div class="w-3/5 sm:w-1/2 md:w-1/3 scroll-anim slide-right flex justify-center md:justify-end">
+            <div class="relative w-full max-w-[220px] md:max-w-[400px] rounded-xl shadow-2xl border-2 md:border-4 border-white/20 overflow-hidden" style="aspect-ratio: 3/4;">
                 <img src="{{ $hero ? asset('storage/' . $hero->card_image) : '/images/model-card.jpg' }}" 
                     alt="Model Batik" 
                     class="absolute inset-0 w-full h-full object-cover">
             </div>
         </div>
+
     </div>
 </section>
 
@@ -300,13 +307,15 @@
                                      alt="{{ $article->title }}">
                             </div>
                             <div class="flex flex-col justify-center">
-                                <h3 class="font-bold text-sm md:text-base mb-1 group-hover:text-brand-green transition-colors leading-snug">{{ $article->title }}</h3>
+                                <div class="article-title-wrapper overflow-hidden mb-1">
+                                    <h3 class="article-title-text font-bold text-base md:text-lg group-hover:text-brand-green transition-colors leading-snug whitespace-nowrap inline-block">{{ $article->title }}</h3>
+                                </div>
                                 <p class="text-xs text-gray-500 line-clamp-3 leading-relaxed">{{ Str::limit(strip_tags($article->content), 130) }}</p>
                             </div>
                         </a>
                     @endforeach
                     <div class="text-center mt-6">
-                        <a href="/artikel" class="text-brand-green font-bold hover:underline text-sm">Selengkapnya ⋁</a>
+                        <a href="/artikel" class="text-brand-green font-bold hover:underline text-sm">Selengkapnya →</a>
                     </div>
                 @else
                     <p class="text-center text-gray-400 py-10">Belum ada artikel terbaru.</p>
@@ -324,7 +333,10 @@
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                  alt="{{ $popular->title }}">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-3">
-                                <span class="bg-white text-brand-dark text-xs font-bold w-5 h-5 flex items-center justify-center mb-1 shadow-lg text-center">{{ $index + 1 }}</span>
+                                <span class="rank-badge text-xs font-extrabold w-6 h-6 flex items-center justify-center mb-1 shadow-lg text-center rounded-sm
+                                    {{ $index === 0 ? 'bg-yellow-400 text-yellow-900 ring-2 ring-yellow-300' : ($index === 1 ? 'bg-gray-300 text-gray-700 ring-2 ring-gray-200' : 'bg-amber-700 text-amber-100 ring-2 ring-amber-600') }}">
+                                    {{ $index + 1 }}
+                                </span>
                                 <h4 class="text-white text-xs font-bold line-clamp-2 leading-snug">{{ $popular->title }}</h4>
                             </div>
                         </a>
@@ -337,5 +349,41 @@
     </section>
 
 </div>{{-- END wrapper utama --}}
+<style>
+.article-title-wrapper {
+    position: relative;
+    max-width: 100%;
+}
+.article-title-text {
+    display: inline-block;
+    white-space: nowrap;
+}
+.article-title-text.marquee-active {
+    animation: marquee-scroll 8s linear infinite;
+    padding-right: 60px;
+}
+.article-title-wrapper:hover .article-title-text.marquee-active {
+    animation-play-state: running;
+}
+@keyframes marquee-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.article-title-wrapper').forEach(function (wrapper) {
+        const text = wrapper.querySelector('.article-title-text');
+        if (!text) return;
+        // Cek apakah teks overflow
+        if (text.scrollWidth > wrapper.offsetWidth) {
+            // Duplikat teks agar loop mulus
+            text.innerHTML = text.innerHTML + '<span style="padding-left:60px;">' + text.innerHTML + '</span>';
+            text.classList.add('marquee-active');
+        }
+    });
+});
+</script>
 
 @endsection
